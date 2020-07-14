@@ -12,6 +12,9 @@ const Landing = () => {
       <Link to="/register" className="btn btn-primary ml-3">
         Register
       </Link>
+      <Link to="/users" className="btn btn-primary ml-3">
+        Users
+      </Link>
     </div>
   );
 };

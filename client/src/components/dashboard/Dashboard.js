@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 //components
 
@@ -15,7 +16,7 @@ const Dashboard = ({ setAuth }) => {
     try {
       const res = await fetch("http://localhost:5000/dashboard/", {
         method: "GET",
-        headers: { jwt_token: localStorage.token }
+        headers: { jwt_token: localStorage.token },
       });
 
       const parseData = await res.json();
@@ -28,7 +29,7 @@ const Dashboard = ({ setAuth }) => {
     }
   };
 
-  const logout = async e => {
+  const logout = async (e) => {
     e.preventDefault();
     try {
       localStorage.removeItem("token");
@@ -48,9 +49,12 @@ const Dashboard = ({ setAuth }) => {
     <div>
       <div className="d-flex mt-5 justify-content-around">
         <h2>{name} 's Todo List</h2>
-        <button onClick={e => logout(e)} className="btn btn-primary">
+        <button onClick={(e) => logout(e)} className="btn btn-primary">
           Logout
         </button>
+        <Link to="/users" className="btn btn-primary ml-3">
+          Users
+        </Link>
       </div>
 
       <InputTodo setTodosChange={setTodosChange} />

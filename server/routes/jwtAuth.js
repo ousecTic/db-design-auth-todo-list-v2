@@ -12,9 +12,10 @@ router.post("/register", validInfo, async (req, res) => {
   const { email, name, password } = req.body;
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
-      email
-    ]);
+    const user = await pool.query(
+      "SELECT user_name FROM users WHERE user_email = $1",
+      [email]
+    );
 
     if (user.rows.length > 0) {
       return res.status(401).json("User already exist!");
@@ -33,6 +34,9 @@ router.post("/register", validInfo, async (req, res) => {
     return res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
+    if (err.constraint == "users_user_name_key") {
+      return res.status(401).json("Username already exist");
+    }
     res.status(500).send("Server error");
   }
 });
@@ -42,7 +46,7 @@ router.post("/login", validInfo, async (req, res) => {
 
   try {
     const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
-      email
+      email,
     ]);
 
     if (user.rows.length === 0) {
